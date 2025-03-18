@@ -6,10 +6,10 @@ from flask_socketio import SocketIO
 from api import api
 from config import Config
 
-# Import our new classes
-from op25 import OP25   # Our OP25 state class.
+
+from op25_instance import op25   # Our OP25 state class.
 from op25_journal_reader import OP25JournalReader  # Reads the systemd journal and updates op25.
-from op25_websocket import OP25WebsocketNotifier  # Notifies websocket clients when op25 updates.
+from op25_websocket_notifier import OP25WebsocketNotifier  # Notifies websocket clients when op25 updates.
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,8 +22,6 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 def on_connect():
     print("Client connected via WebSocket")
 
-# Create a global instance of OP25.
-op25 = OP25()
 
 # Start the journal reader thread to update the op25 state.
 journal_reader = OP25JournalReader(op25)
